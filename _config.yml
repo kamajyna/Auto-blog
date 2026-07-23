@@ -2,7 +2,7 @@ title: Daily Insights
 email: your-email@example.com
 description: >- # this means to ignore newlines until "baseurl:"
   A daily collection of trends and insights.
-baseurl: "/Auto-blog" # the subpath of your site, e.g. /blog
+baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://kamajyna.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 # theme: minima
 plugins:
