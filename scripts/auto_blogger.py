@@ -4,17 +4,37 @@ import random
 from google import genai
 from google.genai import types
 
+import feedparser
+
 def get_daily_topic():
-    # 리스크가 적고 트래픽이 꾸준한 주제(Evergreen niche) 풀
-    topics = [
-        "직장인을 위한 구글 스프레드시트 꿀팁",
-        "애플 실리콘 맥북 배터리 관리 최적화 방법",
-        "노션(Notion)으로 개인 일정 관리하는 법",
-        "AI 챗봇을 업무에 활용하는 3가지 방법",
-        "초보자를 위한 인덱스 펀드 투자 기본 개념",
-        "눈 건강을 지키는 스마트폰 다크모드 활용법"
+    # IT 트렌드 RSS 피드 (예: 구글 뉴스 기술 섹션, ZDNet 등)
+    rss_urls = [
+        "https://news.google.com/rss/search?q=AI+OR+%EC%9D%B8%EA%B3%B5%EC%A7%80%EB%8A%A5+OR+%ED%85%8C%ED%81%AC+when:1d&hl=ko&gl=KR&ceid=KR:ko",
+        "https://feeds.feedburner.com/zdkorea"
     ]
-    return random.choice(topics)
+    
+    articles = []
+    for url in rss_urls:
+        try:
+            feed = feedparser.parse(url)
+            for entry in feed.entries[:5]: # 피드당 상위 5개
+                articles.append(entry.title)
+        except Exception as e:
+            print(f"RSS 파싱 에러: {e}")
+            
+    if articles:
+        topic = random.choice(articles)
+        print(f"RSS에서 추출한 주제: {topic}")
+        return topic
+    else:
+        # RSS 실패 시 백업 주제
+        topics = [
+            "직장인을 위한 구글 스프레드시트 업무 자동화 꿀팁",
+            "생성형 AI 시대, ChatGPT를 업무에 200% 활용하는 비법",
+            "노션(Notion) 템플릿으로 완벽한 개인 일정 관리 시스템 만들기",
+            "초보자를 위한 미국 주식 인덱스 펀드 투자 완벽 가이드"
+        ]
+        return random.choice(topics)
 
 def generate_blog_post(topic):
     # Gemini API 키 확인
@@ -25,26 +45,29 @@ def generate_blog_post(topic):
     client = genai.Client(api_key=api_key)
     
     prompt = f"""
-당신은 IT/테크 및 생산성 향상 팁을 전문으로 다루는 파워 블로거입니다.
-다음 주제에 대해 SEO에 최적화된 블로그 포스트를 작성해주세요.
+당신은 IT/테크 및 생산성 향상 팁을 전문으로 다루는 최상위 파워 블로거입니다.
+다음 주제 혹은 최신 뉴스 타겟에 대해 SEO에 완벽히 최적화된 블로그 포스트를 작성해주세요.
 
 주제: {topic}
 
 요구사항:
-1. 매력적이고 클릭을 유도하는 제목을 작성할 것
-2. 서론, 본론(3가지 이상의 팁이나 방법), 결론으로 구조화할 것
-3. 마크다운 형식으로 작성할 것 (제목은 #, 소제목은 ## 사용)
-4. 본문 마지막에는 자연스럽게 관련 도서나 기기를 추천하는 문장을 넣고, [관련 상품 알아보기](https://coupa.ng/example) 링크를 삽입할 것. 
-5. 그 아래에 "*(이 포스팅은 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.)*" 문구를 이탤릭체로 반드시 포함할 것.
-6. 응답은 Frontmatter (layout, title, date, categories)를 포함한 완벽한 Jekyll markdown 파일 내용이어야 합니다.
-7. 마크다운 코드블록(```markdown)으로 감싸지 말고 순수 텍스트만 출력하세요.
+1. 매력적이고 클릭을 유도하는 제목을 작성할 것 (어그로성이 아닌 정보 가치를 담아)
+2. 서론(도입부 및 흥미 유발), 목차(TOC), 본론(3가지 이상의 상세 팁/분석/방법론), 결론(요약 및 인사이트), FAQ 구조로 작성할 것
+3. 마크다운 형식으로 작성할 것 (제목은 #, 소제목은 ##, ### 사용)
+4. 본문 내 강조할 부분은 굵은 글씨(**bold**)나 인용구(`>`)를 적극 활용하여 가독성을 높일 것
+5. 포스트 최상단에 관련 썸네일 이미지를 Unsplash 소스에서 가져와 삽입할 것. 예: `![썸네일](https://source.unsplash.com/800x400/?tech,ai)` (주제에 맞는 키워드 사용)
+6. 본문 마지막에는 자연스럽게 관련 도서나 전자기기를 추천하는 문장을 넣고, [관련 상품 알아보기](https://coupa.ng/example) 링크를 삽입할 것. 
+7. 그 아래에 "*(이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.)*" 문구를 이탤릭체로 반드시 포함할 것.
+8. 응답은 Frontmatter (layout, title, date, categories, tags)를 포함한 완벽한 Jekyll markdown 파일 내용이어야 합니다.
+9. 마크다운 코드블록(```markdown)으로 감싸지 말고 순수 텍스트만 출력하세요.
 
 Frontmatter 예시:
 ---
 layout: post
 title: "생성된 매력적인 제목"
 date: YYYY-MM-DD HH:MM:SS +0900
-categories: tech
+categories: [Tech, Trend]
+tags: [AI, 기술, 트렌드]
 ---
 
 내용...
