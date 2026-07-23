@@ -1,0 +1,33 @@
+---
+layout: default
+---
+
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <div class="post-meta-top">
+      {%- if page.categories.size > 0 -%}
+        <span class="post-cat-badge">{{ page.categories | first }}</span>
+      {%- endif -%}
+      <time class="dt-published" datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
+        {{ page.date | date: "%Y년 %m월 %d일" }}
+      </time>
+    </div>
+    <h1 class="post-title p-name" itemprop="name headline">{{ page.title | escape }}</h1>
+    
+    {%- if page.tags.size > 0 -%}
+      <div class="post-tags">
+        {% for tag in page.tags %}
+          <span class="tag">#{{ tag }}</span>
+        {% endfor %}
+      </div>
+    {%- endif -%}
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    {{ content }}
+  </div>
+
+  <div class="post-footer">
+    <a href="{{ "/" | relative_url }}" class="back-link">← 메인으로 돌아가기</a>
+  </div>
+</article>
