@@ -2,8 +2,8 @@ name: Daily Auto Blog Publisher
 
 on:
   schedule:
-    # 매일 오전 6시 KST (UTC 기준 21:00)
-    - cron: '0 21 * * *'
+    # 주 5회 (월~금) 오전 6시 KST (UTC 기준 일~목 21:00)
+    - cron: '0 21 * * 0-4'
   workflow_dispatch: # 수동 실행을 위한 설정
 
 jobs:
