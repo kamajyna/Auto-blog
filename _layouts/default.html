@@ -11,14 +11,25 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  {%- if site.google_analytics -%}
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.google_analytics }}"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', '{{ site.google_analytics }}');
+  </script>
+  {%- endif -%}
 </head>
 <body>
   <header class="site-header">
-    <div class="wrapper">
+    <div class="wrapper site-header-wrapper">
       <a class="site-title" rel="author" href="{{ "/" | relative_url }}">{{ site.title | escape }}</a>
       <nav class="site-nav">
         <div class="trigger">
-          <!-- You can add nav links here -->
+          <a class="page-link" href="{{ "/archive/" | relative_url }}">전체 글</a>
+          <a class="page-link" href="{{ "/feed.xml" | relative_url }}" target="_blank">RSS</a>
         </div>
       </nav>
     </div>

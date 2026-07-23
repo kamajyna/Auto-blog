@@ -1,0 +1,22 @@
+---
+layout: default
+---
+
+<div class="archive-page">
+  <h1 class="section-heading">📚 전체 글 아카이브</h1>
+  
+  <div class="archive-list">
+    {% assign postsByYear = site.posts | group_by_exp: "post", "post.date | date: '%Y'" %}
+    {% for year in postsByYear %}
+      <h2 class="archive-year">{{ year.name }}년</h2>
+      <ul class="archive-posts">
+        {% for post in year.items %}
+          <li class="archive-item">
+            <span class="archive-date">{{ post.date | date: "%m-%d" }}</span>
+            <a href="{{ post.url | relative_url }}" class="archive-link">{{ post.title | escape }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endfor %}
+  </div>
+</div>

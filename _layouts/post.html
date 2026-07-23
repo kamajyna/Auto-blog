@@ -27,6 +27,27 @@ layout: default
     {{ content }}
   </div>
 
+  <!-- Related Posts Section -->
+  {% assign current_category = page.categories | first %}
+  {% assign related_posts = site.categories[current_category] | where_exp: "item", "item.url != page.url" %}
+  {% if related_posts.size > 0 %}
+    <div class="related-posts-section">
+      <h3 class="section-heading">📌 연관 포스트</h3>
+      <div class="post-grid">
+        {% for post in related_posts limit:2 %}
+          <div class="post-card">
+            <a class="post-link" href="{{ post.url | relative_url }}">
+              <div class="post-card-content">
+                <h4 class="post-title">{{ post.title | escape }}</h4>
+                <span class="post-date">{{ post.date | date: "%Y-%m-%d" }}</span>
+              </div>
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+
   <div class="post-footer">
     <a href="{{ "/" | relative_url }}" class="back-link">← 메인으로 돌아가기</a>
   </div>

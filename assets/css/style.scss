@@ -48,11 +48,57 @@ a:hover {
   top: 0;
   z-index: 100;
 }
+.site-header-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 .site-title {
   font-size: 1.5rem;
   font-weight: 700;
   color: var(--text-color) !important;
   text-decoration: none !important;
+}
+.site-nav .page-link {
+  color: var(--text-muted);
+  margin-left: 20px;
+  font-weight: 500;
+}
+.site-nav .page-link:hover {
+  color: var(--accent-color);
+  text-decoration: none;
+}
+
+/* Archive Page */
+.archive-year {
+  font-size: 1.5rem;
+  margin-top: 30px;
+  color: var(--accent-color);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 5px;
+}
+.archive-posts {
+  list-style: none;
+  padding: 0;
+}
+.archive-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--border-color);
+}
+.archive-date {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  width: 70px;
+  flex-shrink: 0;
+}
+.archive-link {
+  color: var(--text-color);
+  font-weight: 500;
+}
+.archive-link:hover {
+  color: var(--accent-color);
 }
 
 /* Home / Grid */
